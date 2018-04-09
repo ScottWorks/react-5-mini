@@ -2,7 +2,7 @@
 
 # Project Summary
 
-In this project, we'll create a small counter application using React and Redux. We'll also include extra functionality for undo/redo actions.
+In this project, we'll create a small reducer application using React and Redux. We'll also include extra functionality for undo/redo actions.
 
 # Live Example
 
@@ -12,7 +12,7 @@ In this project, we'll create a small counter application using React and Redux.
 
 ## Setup
 
-* `fork` and `clone` this repository. 
+* `fork` and `clone` this repository.
 * `cd` into the project root.
 * Run `npm install` to fetch the project dependencies.
 * Run `npm start` to spin up a development server.
@@ -28,21 +28,21 @@ In this step, we'll install some new dependencies, create a reducer, and create 
 ### Instructions
 
 * Install `redux` and `react-redux`
-* Create an initial state `src/ducks/counter.js`
-* Write a simple reducer in `src/ducks/counter.js`
+* Create an initial state `src/ducks/reducer.js`
+* Write a simple reducer in `src/ducks/reducer.js`
 * Create a Redux store in `src/store.js`
 
 ### Solution
 
 <details>
 
-<summary> <code> ./src/ducks/counter.js </code> </summary>
+<summary> <code> ./src/ducks/reducer.js </code> </summary>
 
 ```js
 const initialState = { currentValue: 0 };
 
-export default function counter( state = initialState, action ) {
-	return state;
+export default function reducer(state = initialState, action) {
+  return state;
 }
 ```
 
@@ -53,11 +53,11 @@ export default function counter( state = initialState, action ) {
 <summary> <code> ./src/store.js </code> </summary>
 
 ```js
-import { createStore } from "redux";
+import { createStore } from 'redux';
 
-import counter from "./ducks/counter";
+import reducer from './ducks/reducer';
 
-export default createStore( counter );
+export default createStore(reducer);
 ```
 
 </details>
@@ -88,20 +88,20 @@ In this step, we'll make our application aware that redux exists and connect the
 <summary> <code> ./src/index.js </code> </summary>
 
 ```js
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
-import "./index.css";
+import './index.css';
 
-import store from "./store";
-import App from "./App";
+import store from './store';
+import App from './App';
 
 ReactDOM.render(
-  <Provider store={ store }>
+  <Provider store={store}>
     <App />
-  </Provider>
-  , document.getElementById( 'root' )
+  </Provider>,
+  document.getElementById('root')
 );
 ```
 
@@ -144,7 +144,7 @@ In this step, we'll set up Redux to actually execute actions. We'll start by cre
 
 ### Instructions
 
-* Open `./src/ducks/counter.js`.
+* Open `./src/ducks/reducer.js`.
 * Create `INCREMENT` and `DECREMENT` action types.
 * Write action creators corresponding to `INCREMENT` and `DECREMENT` action types.
   * Each of these action creators should accept an `amount` argument.
@@ -156,16 +156,16 @@ In this step, we'll set up Redux to actually execute actions. We'll start by cre
 
 <details>
 
-<summary> <code> ./src/ducks/counter.js </code> </summary>
+<summary> <code> ./src/ducks/reducer.js </code> </summary>
 
 ```js
 const initialState = { currentValue: 0 };
 
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
 
-export default function counter( state = initialState, action ) {
-  switch ( action.type ) {
+export default function reducer(state = initialState, action) {
+  switch (action.type) {
     case INCREMENT:
       return { currentValue: state.currentValue + action.amount };
     case DECREMENT:
@@ -175,11 +175,11 @@ export default function counter( state = initialState, action ) {
   }
 }
 
-export function increment( amount ) {
+export function increment(amount) {
   return { amount, type: INCREMENT };
 }
 
-export function decrement( amount ) {
+export function decrement(amount) {
   return { amount, type: DECREMENT };
 }
 ```
@@ -197,7 +197,7 @@ In this step, we'll wire up the `App` component so that it can dispatch actions 
 * Open `./src/App.js`.
 * Import the `increment` and `decrement` action creators.
 * Use `connect`'s `mapDispatchToProps` to place the action creators on `App`'s props.
-* Update the `.counter_button` buttons to call `increment` or `decrement` with the correct `amount`.
+* Update the `.reducer_button` buttons to call `increment` or `decrement` with the correct `amount`.
 
 ### Solution
 
@@ -206,12 +206,12 @@ In this step, we'll wire up the `App` component so that it can dispatch actions 
 <summary> <code> ./src/App.js </code> </summary>
 
 ```js
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import "./App.css";
+import './App.css';
 
-import { decrement, increment } from "./ducks/counter";
+import { decrement, increment } from './ducks/reducer';
 
 class App extends Component {
   render() {
@@ -220,64 +220,50 @@ class App extends Component {
     return (
       <div className="app">
         <section className="counter">
-          <h1 className="counter__current-value">{ currentValue }</h1>
+          <h1 className="counter__current-value">{currentValue}</h1>
           <div className="counter__button-wrapper">
-            <button
-              className="counter__button"
-              onClick={ () => increment( 1 ) }
-            >
+            <button className="counter__button" onClick={() => increment(1)}>
               +1
             </button>
-            <button
-              className="counter__button"
-              onClick={ () => increment( 5 ) }
-            >
+            <button className="counter__button" onClick={() => increment(5)}>
               +5
             </button>
-            <button
-              className="counter__button"
-              onClick={ () => decrement( 1 ) }
-            >
+            <button className="counter__button" onClick={() => decrement(1)}>
               -1
             </button>
-            <button
-              className="counter__button"
-              onClick={ () => decrement( 5 ) }
-            >
+            <button className="counter__button" onClick={() => decrement(5)}>
               -5
             </button>
             <br />
             <button
               className="counter__button"
-              disabled={ true }
-              onClick={ () => null }
+              disabled={true}
+              onClick={() => null}
             >
               Undo
             </button>
             <button
               className="counter__button"
-              disabled={ true }
-              onClick={ () => null }
+              disabled={true}
+              onClick={() => null}
             >
               Redo
             </button>
           </div>
         </section>
         <section className="state">
-          <pre>
-            { JSON.stringify( this.props, null, 2 ) }
-          </pre>
+          <pre>{JSON.stringify(this.props, null, 2)}</pre>
         </section>
       </div>
     );
   }
 }
 
-function mapStateToProps( state ) {
+function mapStateToProps(state) {
   return state;
 }
 
-export default connect( mapStateToProps, { decrement, increment } )( App );
+export default connect(mapStateToProps, { decrement, increment })(App);
 ```
 
 </details>
@@ -294,16 +280,16 @@ In this step, we'll implement undo/redo logic into our reducer.
 
 ### Instructions
 
-* Open `./src/ducks/counter.js`.
+* Open `./src/ducks/reducer.js`.
 * Create `UNDO` and `REDO` action types.
 * Write action creators for `UNDO` and `REDO`.
-* Refactor `initialState` and `counter` to handle undo/redo logic.
+* Refactor `initialState` and `reducer` to handle undo/redo logic.
 
 ### Solution
 
 <details>
 
-<summary> <code> ./src/ducks/counter.js </code> </summary>
+<summary> <code> ./src/ducks/reducer.js </code> </summary>
 
 ```js
 const initialState = {
@@ -312,47 +298,50 @@ const initialState = {
   previousValues: []
 };
 
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
-const UNDO = "UNDO";
-const REDO = "REDO";
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+const UNDO = 'UNDO';
+const REDO = 'REDO';
 
-export default function counter( state = initialState, action ) {
-  switch ( action.type ) {
+export default function reducer(state = initialState, action) {
+  switch (action.type) {
     case INCREMENT:
       return {
-        currentValue: state.currentValue + action.amount, 
+        currentValue: state.currentValue + action.amount,
         futureValues: [],
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     case DECREMENT:
       return {
         currentValue: state.currentValue - action.amount,
         futureValues: [],
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     case UNDO:
       return {
-        currentValue: state.previousValues[ 0 ],
-        futureValues: [ state.currentValue, ...state.futureValues ],
-        previousValues: state.previousValues.slice( 1, state.previousValues.length )
+        currentValue: state.previousValues[0],
+        futureValues: [state.currentValue, ...state.futureValues],
+        previousValues: state.previousValues.slice(
+          1,
+          state.previousValues.length
+        )
       };
     case REDO:
       return {
-        currentValue: state.futureValues[ 0 ],
-        futureValues: state.futureValues.slice( 1, state.futureValues.length ),
-        previousValues: [ state.currentValue, ...state.previousValues ]
+        currentValue: state.futureValues[0],
+        futureValues: state.futureValues.slice(1, state.futureValues.length),
+        previousValues: [state.currentValue, ...state.previousValues]
       };
     default:
       return state;
   }
 }
 
-export function increment( amount ) {
+export function increment(amount) {
   return { amount, type: INCREMENT };
 }
 
-export function decrement( amount ) {
+export function decrement(amount) {
   return { amount, type: DECREMENT };
 }
 
@@ -369,7 +358,7 @@ export function redo() {
 
 ## Step 6
 
-### Summary 
+### Summary
 
 In this step, we'll import `undo` and `redo` action creators into our `App.js` and hook them up their respective buttons.
 
@@ -388,81 +377,74 @@ In this step, we'll import `undo` and `redo` action creators into our `App.js` a
 <summary> <code> ./src/App.js </code> </summary>
 
 ```js
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import { decrement, increment, redo, undo } from "./ducks/counter";
+import { decrement, increment, redo, undo } from './ducks/reducer';
 
-import "./App.css";
+import './App.css';
 
 class App extends Component {
   render() {
-    const { 
-      currentValue, decrement, futureValues,
-      increment, previousValues, redo, undo
+    const {
+      currentValue,
+      decrement,
+      futureValues,
+      increment,
+      previousValues,
+      redo,
+      undo
     } = this.props;
-    
+
     return (
       <div className="app">
         <section className="counter">
-          <h1 className="counter__current-value">{ currentValue }</h1>
+          <h1 className="counter__current-value">{currentValue}</h1>
           <div className="counter__button-wrapper">
-            <button
-              className="counter__button"
-              onClick={ () => increment( 1 ) }
-            >
+            <button className="counter__button" onClick={() => increment(1)}>
               +1
             </button>
-            <button
-              className="counter__button"
-              onClick={ () => increment( 5 ) }
-            >
+            <button className="counter__button" onClick={() => increment(5)}>
               +5
             </button>
-            <button
-              className="counter__button"
-              onClick={ () => decrement( 1 ) }
-            >
+            <button className="counter__button" onClick={() => decrement(1)}>
               -1
             </button>
-            <button
-              className="counter__button"
-              onClick={ () => decrement( 5 ) }
-            >
+            <button className="counter__button" onClick={() => decrement(5)}>
               -5
             </button>
             <br />
             <button
               className="counter__button"
-              disabled={ previousValues.length === 0 }
-              onClick={ undo }
+              disabled={previousValues.length === 0}
+              onClick={undo}
             >
               Undo
             </button>
             <button
               className="counter__button"
-              disabled={ futureValues.length === 0 }
-              onClick={ redo }
+              disabled={futureValues.length === 0}
+              onClick={redo}
             >
               Redo
             </button>
           </div>
         </section>
         <section className="state">
-          <pre>
-            { JSON.stringify( this.props, null, 2 ) }
-          </pre>
+          <pre>{JSON.stringify(this.props, null, 2)}</pre>
         </section>
       </div>
     );
   }
 }
 
-function mapStateToProps( state ) {
+function mapStateToProps(state) {
   return state;
 }
 
-export default connect( mapStateToProps, { decrement, increment, redo, undo } )( App );
+export default connect(mapStateToProps, { decrement, increment, redo, undo })(
+  App
+);
 ```
 
 </details>
